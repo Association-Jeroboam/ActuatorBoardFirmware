@@ -7,6 +7,7 @@ namespace Board {
     namespace Com {
         namespace CANBus {
             void init();
+            bool send(canFrame_t canData);
         }
     }
 }
