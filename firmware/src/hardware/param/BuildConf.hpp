@@ -1,12 +1,18 @@
 #pragma once
 
+#include "ch.hpp"
 #include "Board.hpp"
 #include "board.h"
+#include "hal_serial.h"
 
 #define LOGGING_DRIVER SD2
 #define SHELL_DRIVER LOGGING_DRIVER
 
 #define LED_LINE LINE_LED_GREEN
+#define XL320_DRIVER SD1
+
+#define XL320_DATA_PIN PAL_LINE(GPIOA, 9U)
+#define XL320_DIR_PIN LINE_ARD_D12
 
 #define CAN_DRIVER CAND1
 

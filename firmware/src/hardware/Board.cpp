@@ -16,7 +16,9 @@ CANConfig canConfig = {
 };
 
 void Board::init() {
-
+    // XL320 serial driver
+    palSetLineMode(XL320_DATA_PIN, PAL_MODE_ALTERNATE(7));
+    palSetLineMode(XL320_DIR_PIN, PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 void Board::Com::CANBus::init(){
