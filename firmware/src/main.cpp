@@ -2,6 +2,10 @@
 #include <hal.h>
 #include "Board.hpp"
 #include "Logging.hpp"
+#include "BuildConf.hpp"
+#include "Dynamixel2Arduino.h"
+
+
 
 int main() {
     halInit();
@@ -9,26 +13,27 @@ int main() {
     Board::init();
     Logging::init();
     Logging::println("Starting up");
-    Board::Com::CANBus::init();
 
+    Dynamixel2Arduino actuator_bus(&XL320_DRIVER);
+    actuator_bus.begin(1000000);
+    uint8_t id = 21;
+    bool ret;
 
+    actuator_bus.setPortProtocolVersion(2.0);
     while (!chThdShouldTerminateX()) {
-        canFrame_t canMsg = CanProtocol::createFrame(CAN_CURRENT_POSE_ID, (int16_t)50, (int16_t)-1000, (float)3.1415);
-        Board::Com::CANBus::send(canMsg);
 
-        canMsg = CanProtocol::createFrame(CAN_ACTION_DONE_ID);
-        Board::Com::CANBus::send(canMsg);
 
-        canMsg = CanProtocol::createFrame(CAN_COLOR_ID, (uint8_t)126, (uint8_t)15, (uint8_t)243);
-        Board::Com::CANBus::send(canMsg);
+        ret = actuator_bus.setGoalPosition(id, 0, UNIT_DEGREE);
+        chThdSleepMilliseconds(1000);
+        float position = actuator_bus.getPresentPosition(id, UNIT_DEGREE);
+        palSetLine(LED_LINE);
+        Logging::println("position: %f, success %d", position, ret);
+        ret = actuator_bus.setGoalPosition(id, 90, UNIT_DEGREE);
+        chThdSleepMilliseconds(1000);
+        position = actuator_bus.getPresentPosition(id, UNIT_DEGREE);
+        palClearLine(LED_LINE);
+        Logging::println("position: %f, success %d", position, ret);
 
-        canMsg = CanProtocol::createFrame(CAN_PLIERS_ID, (uint8_t) 7, (uint8_t)9);
-        Board::Com::CANBus::send(canMsg);
-
-        canMsg = CanProtocol::createFrame(CAN_SLIDERS_ID, (uint8_t) 7, (uint16_t)9);
-        Board::Com::CANBus::send(canMsg);
-        chThdSleepMilliseconds(100);
-        palToggleLine(LINE_LED_GREEN);
     }
 
     Logging::println("Shutting down");
