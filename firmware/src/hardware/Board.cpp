@@ -24,7 +24,7 @@ void Board::Com::CANBus::init(){
     palSetLineMode(CAN_RX_PIN, CAN_RX_PIN_MODE);
     canStart(&CAN_DRIVER, &canConfig);
     canTxThread.start(NORMALPRIO);
-    canRxThread.start(NORMALPRIO);
+    canRxThread.start(NORMALPRIO+1);
     // let Threads finish initialization
     chThdYield();
 }
