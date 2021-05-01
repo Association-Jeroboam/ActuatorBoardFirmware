@@ -11,12 +11,14 @@ CanRxThread canRxThread;
 CanTxThread canTxThread;
 
 CANConfig canConfig = {
-        .btr = 0x00050007,
-//    .mcr = 0,
+    .mcr = 0,
+    .btr = 0x00050007,
 };
 
 void Board::init() {
-
+    // XL320 serial driver
+    palSetLineMode(XL320_DATA_PIN, PAL_MODE_ALTERNATE(7));
+    palSetLineMode(XL320_DIR_PIN, PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 void Board::Com::CANBus::init(){
