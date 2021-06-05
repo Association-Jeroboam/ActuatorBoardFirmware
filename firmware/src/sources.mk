@@ -1,5 +1,6 @@
 COMMONCPPSRC += $(SOURCEDIR)/main.cpp
 COMMONCPPSRC += $(SOURCEDIR)/Memory.cpp
+COMMONCPPSRC += $(SOURCEDIR)/PliersManager.cpp
 COMMONCPPSRC += $(SOURCEDIR)/DxlPliers.cpp
 
 include $(SOURCEDIR)/$(TARGET_TYPE)/target.mk
