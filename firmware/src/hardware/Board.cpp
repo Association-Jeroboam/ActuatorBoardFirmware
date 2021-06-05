@@ -34,3 +34,7 @@ void Board::Com::CANBus::init(){
 bool Board::Com::CANBus::send(canFrame_t canData){
     return canTxThread.send(canData);
 }
+
+void Board::Com::CANBus::registerListener(CanListener *listener) {
+    canRxThread.registerListener(listener);
+}
