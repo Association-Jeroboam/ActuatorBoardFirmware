@@ -6,9 +6,23 @@
 #include "Logging.hpp"
 #include "CanRxThread.hpp"
 #include "CanTxThread.hpp"
+#include "Pliers.hpp"
+#include "DxlPliers.hpp"
 
 CanRxThread canRxThread;
 CanTxThread canTxThread;
+static DxlPliers s_pliersFrontFarLeft(PLIERS_FRONT_FAR_LEFT_ID);
+static DxlPliers s_pliersFrontLeft(PLIERS_FRONTLEFT_ID);
+static DxlPliers s_pliersFrontRight(PLIERS_FRONT_RIGHT_ID);
+static DxlPliers s_pliersFrontFarRight(PLIERS_FRONT_FAR_RIGHT_ID);
+static DxlPliers s_pliersRearFarRight(PLIERS_REAR_FAR_RIGHT_ID);
+static DxlPliers s_pliersRearRight(PLIERS_REAR_RIGHT_ID);
+static DxlPliers s_pliersRearMiddle(PLIERS_REAR_MIDDLE_ID);
+static DxlPliers s_pliersRearLeft(PLIERS_REAR_LEFT_ID);
+static DxlPliers s_pliersRearFarLeft(PLIERS_REAR_FAR_LEFT_ID);
+
+constexpr uint32_t DXL_BAUDRATE = 1000000;
+Dynamixel2Arduino * dxlBus;
 
 CANConfig canConfig = {
     .mcr = 0,
@@ -16,9 +30,6 @@ CANConfig canConfig = {
 };
 
 void Board::init() {
-    // XL320 serial driver
-    palSetLineMode(XL320_DATA_PIN, PAL_MODE_ALTERNATE(7));
-    palSetLineMode(XL320_DIR_PIN, PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 void Board::Com::CANBus::init(){
@@ -37,4 +48,32 @@ bool Board::Com::CANBus::send(canFrame_t canData){
 
 void Board::Com::CANBus::registerListener(CanListener *listener) {
     canRxThread.registerListener(listener);
+}
+
+void Board::Com::DxlServo::init(){
+    palSetLineMode(XL320_DATA_PIN, PAL_MODE_ALTERNATE(7));
+    palSetLineMode(XL320_DIR_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+    dxlBus = new Dynamixel2Arduino(&XL320_DRIVER);
+    dxlBus->begin(DXL_BAUDRATE);
+    dxlBus->setPortProtocolVersion(2.0);
+}
+
+Dynamixel2Arduino * Board::Com::DxlServo::getBus(){
+    return dxlBus;
+}
+
+Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
+
+    switch (ID) {
+        case PLIERS_FRONT_FAR_LEFT: return &s_pliersFrontFarLeft;
+        case PLIERS_FRONT_LEFT: return &s_pliersFrontLeft;
+        case PLIERS_FRONT_RIGHT: return &s_pliersFrontRight;
+        case PLIERS_FRONT_FAR_RIGHT: return &s_pliersFrontFarRight;
+        case PLIERS_REAR_FAR_RIGHT: return &s_pliersRearFarRight;
+        case PLIERS_REAR_RIGHT: return &s_pliersRearRight;
+        case PLIERS_REAR_MIDDLE: return &s_pliersRearMiddle;
+        case PLIERS_REAR_LEFT: return &s_pliersRearLeft;
+        case PLIERS_REAR_FAR_LEFT: return &s_pliersRearFarLeft;
+    }
+    return nullptr;
 }
