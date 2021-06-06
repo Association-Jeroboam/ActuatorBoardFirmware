@@ -22,7 +22,7 @@
 #define CAN_RX_PIN_MODE PAL_MODE_ALTERNATE(9)
 
 constexpr uint8_t PLIERS_FRONT_FAR_LEFT_ID  = 13; //TODO: CHANGE ME!
-constexpr uint8_t PLIERS_FRONTLEFT_ID       = 14; //TODO: CHANGE ME!
+constexpr uint8_t PLIERS_FRONT_LEFT_ID      = 14; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_FRONT_RIGHT_ID     = 15; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_FRONT_FAR_RIGHT_ID = 16; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_REAR_FAR_RIGHT_ID  = 0; //TODO: CHANGE ME!

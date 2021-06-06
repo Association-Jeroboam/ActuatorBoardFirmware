@@ -12,7 +12,7 @@
 CanRxThread canRxThread;
 CanTxThread canTxThread;
 static DxlPliers s_pliersFrontFarLeft(PLIERS_FRONT_FAR_LEFT_ID);
-static DxlPliers s_pliersFrontLeft(PLIERS_FRONTLEFT_ID);
+static DxlPliers s_pliersFrontLeft(PLIERS_FRONT_LEFT_ID);
 static DxlPliers s_pliersFrontRight(PLIERS_FRONT_RIGHT_ID);
 static DxlPliers s_pliersFrontFarRight(PLIERS_FRONT_FAR_RIGHT_ID);
 static DxlPliers s_pliersRearFarRight(PLIERS_REAR_FAR_RIGHT_ID);

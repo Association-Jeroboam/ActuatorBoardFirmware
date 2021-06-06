@@ -23,7 +23,7 @@ void DxlPliers::init(){
     bus->setGoalVelocity(m_id, 20., UNIT_PERCENT);
     // Configuration done
     bus->torqueOn(m_id);
-    bus->ledOn(m_id);
+    bus->ledOn(m_id, LED_GREEN);
     bus->setTorqueLimit(m_id, DXL_PLIERS_TORQUE_LIMIT, UNIT_PERCENT);
 }
 
