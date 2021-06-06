@@ -18,6 +18,8 @@ namespace Board {
             void init();
             Dynamixel2Arduino * getBus();
             Pliers* getPliersByID(enum pliersID ID);
+            void engagePliersBlock();
+            void disengagePliersBlock();
         }
     }
 }

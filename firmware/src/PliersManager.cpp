@@ -26,43 +26,64 @@ void PliersManager::main() {
 
     for(uint8_t id = 0; id < PLIERS_MANAGER_MAX_PLIERS_COUNT; id++) {
         if(m_pliers[id]) {
-            m_pliers[id]->init();
-            m_pliers[id]->open();
+            m_pliers[id]->deactivate();
         }
     }
+    Board::Com::DxlServo::disengagePliersBlock();
 
     Board::Com::CANBus::registerListener(this);
 
     while (!shouldTerminate()){
-        struct pliersData * data;
-        chFifoReceiveObjectTimeout(&m_orderQueue, (void **)&data, TIME_INFINITE);
-        if(data->plierID < PLIERS_MANAGER_MAX_PLIERS_COUNT) {
-            switch (data->state) {
-                case PLIERS_OPEN:
-                    m_pliers[data->plierID]->open();
-                case PLIERS_CLOSE:
-                    m_pliers[data->plierID]->close();
-            }
-            Logging::println("[PliersManager] Order sent. ID %u, state %u", data->plierID, data->state);
+        canFrame_t * frame;
+        chFifoReceiveObjectTimeout(&m_orderQueue, (void **)&frame, TIME_INFINITE);
+        switch (frame->ID) {
+            case CAN_PLIERS_ID:
+                if( frame->data.pliersData.plierID < PLIERS_MANAGER_MAX_PLIERS_COUNT) {
+                    switch (frame->data.pliersData.state) {
+                        case PLIERS_OPEN:
+                            m_pliers[frame->data.pliersData.plierID]->deactivate();
+                        case PLIERS_CLOSE:
+                            m_pliers[frame->data.pliersData.plierID]->activate();
+                    }
+                    Logging::println("[PliersManager] Order sent. ID %u, state %u", frame->data.pliersData.plierID, frame->data.pliersData.state);
 
-        } else {
-            Logging::println("[PliersManager] received order for unknown pliers");
+                } else {
+                    Logging::println("[PliersManager] received order for unknown pliers");
+                }
+                break;
+            case CAN_PLIERS_BLOCK_ID:
+                if(frame->data.pliersBlockData.state == 0){
+                    Board::Com::DxlServo::disengagePliersBlock();
+                } else {
+                    Board::Com::DxlServo::engagePliersBlock();
+                }
+                break;
+            case CAN_ARMS_ID:
+                break;
+            case CAN_SLIDERS_ID:
+                break;
+            default:
+                Logging::println("[PliersManager] Wrong ID received");
         }
 
 
-        chFifoReturnObject(&m_orderQueue, data);
+
+        chFifoReturnObject(&m_orderQueue, frame);
     }
 }
 
 void PliersManager::processFrame(canFrame_t frame){
 
-    if(frame.ID == CAN_PLIERS_ID) {
-        struct pliersData *data = (struct pliersData *) chFifoTakeObjectTimeout(&m_orderQueue, TIME_IMMEDIATE);
-        if (data == NULL) {
+    if(frame.ID == CAN_PLIERS_ID       ||
+       frame.ID == CAN_PLIERS_BLOCK_ID ||
+       frame.ID == CAN_ARMS_ID         ||
+       frame.ID == CAN_SLIDERS_ID        ) {
+        canFrame_t *pushed_frame = (canFrame_t *) chFifoTakeObjectTimeout(&m_orderQueue, TIME_IMMEDIATE);
+        if ( pushed_frame == NULL) {
             Logging::println("[PliersManager] Queue full!");
         } else {
-            *data = frame.data.pliersData;
-            chFifoSendObject(&m_orderQueue, data);
+            *pushed_frame = frame;
+            chFifoSendObject(&m_orderQueue, pushed_frame);
         }
     }
 }

@@ -53,14 +53,17 @@ static void cmd_pliers(BaseSequentialStream* chp, int argc, char* argv[]) {
     (void)chp;
     if (argc == 2) {
         enum pliersID id = (enum pliersID)atoi(argv[0]);
-        enum pliersState state = (enum pliersState)atoi(argv[1]);
-        if(id > PLIERS_REAR_FAR_LEFT){
-            Logging::println("Bad ID");
+        enum pliersState state;
+        if(!strcmp(argv[1], "open")) {
+            state = PLIERS_OPEN;
+        } else if(!strcmp(argv[1], "close")) {
+            state = PLIERS_CLOSE;
+        } else {
             goto usage;
         }
 
-        if(state > PLIERS_CLOSE){
-            Logging::println("Bad state");
+        if(id > PLIERS_REAR_FAR_LEFT){
+            Logging::println("Bad ID");
             goto usage;
         }
 
@@ -83,8 +86,39 @@ usage:
     Logging::println("pliers [pliersID] [open/close]");
 }
 
+static void cmd_pliers_block(BaseSequentialStream* chp, int argc, char* argv[]) {
+    (void)chp;
+    if (argc == 1) {
+        uint8_t state;
+        if(!strcmp(argv[0], "engage")) {
+            state = 1;
+        } else if(!strcmp(argv[0], "disengage")) {
+            state = 0;
+        } else {
+            goto usage;
+        }
+
+        canFrame_t frame = {
+                .ID = CAN_PLIERS_BLOCK_ID,
+                .len = CAN_PLIERS_BLOCK_LEN,
+        };
+        frame.data.pliersBlockData = {
+                .state = state,
+        };
+        PliersManager::instance()->processFrame(frame);
+    } else {
+        goto usage;
+    }
+    return;
+
+usage:
+    Logging::println("usage:");
+    Logging::println("pliers_block [engage/disengage]");
+}
+
 static const ShellCommand commands[] = {
     {"pliers", cmd_pliers},
+    {"pliers_block", cmd_pliers_block},
     {NULL, NULL},
 };
 /*

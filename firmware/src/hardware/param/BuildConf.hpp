@@ -31,3 +31,11 @@ constexpr uint8_t PLIERS_REAR_MIDDLE_ID     = 0; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_REAR_LEFT_ID       = 0; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_REAR_FAR_LEFT_ID   = 0; //TODO: CHANGE ME!
 
+constexpr uint8_t PLIERS_BLOCK_LEFT_ID    = 24;
+constexpr uint8_t PLIERS_BLOCK_LEFT_IDLE_ANGLE = 224;
+constexpr uint8_t PLIERS_BLOCK_LEFT_ACTIVE_ANGLE = 148;
+
+constexpr uint8_t PLIERS_BLOCK_RIGHT_ID   = 18;
+constexpr uint8_t PLIERS_BLOCK_RIGHT_IDLE_ANGLE = 76;
+constexpr uint8_t PLIERS_BLOCK_RIGHT_ACTIVE_ANGLE = 152;
+

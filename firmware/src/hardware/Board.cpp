@@ -21,6 +21,9 @@ static DxlPliers s_pliersRearMiddle(PLIERS_REAR_MIDDLE_ID);
 static DxlPliers s_pliersRearLeft(PLIERS_REAR_LEFT_ID);
 static DxlPliers s_pliersRearFarLeft(PLIERS_REAR_FAR_LEFT_ID);
 
+static DxlPliers s_pliersBlockLeft(PLIERS_BLOCK_LEFT_ID, PLIERS_BLOCK_LEFT_IDLE_ANGLE, PLIERS_BLOCK_LEFT_ACTIVE_ANGLE);
+static DxlPliers s_pliersBlockRight(PLIERS_BLOCK_RIGHT_ID, PLIERS_BLOCK_RIGHT_IDLE_ANGLE, PLIERS_BLOCK_RIGHT_ACTIVE_ANGLE);
+
 constexpr uint32_t DXL_BAUDRATE = 1000000;
 Dynamixel2Arduino * dxlBus;
 
@@ -56,6 +59,22 @@ void Board::Com::DxlServo::init(){
     dxlBus = new Dynamixel2Arduino(&XL320_DRIVER);
     dxlBus->begin(DXL_BAUDRATE);
     dxlBus->setPortProtocolVersion(2.0);
+
+    //init pliers
+    s_pliersFrontFarLeft.init();
+    s_pliersFrontLeft.init();
+    s_pliersFrontRight.init();
+    s_pliersFrontFarRight.init();
+    s_pliersRearFarRight.init();
+    s_pliersRearRight.init();
+    s_pliersRearMiddle.init();
+    s_pliersRearLeft.init();
+    s_pliersRearFarLeft.init();
+
+    //init pliers block
+    s_pliersBlockLeft.init();
+    s_pliersBlockRight.init();
+
 }
 
 Dynamixel2Arduino * Board::Com::DxlServo::getBus(){
@@ -77,3 +96,13 @@ Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
     }
     return nullptr;
 }
+void Board::Com::DxlServo::engagePliersBlock() {
+    s_pliersBlockLeft.activate();
+    s_pliersBlockRight.activate();
+}
+
+void Board::Com::DxlServo::disengagePliersBlock() {
+    s_pliersBlockLeft.deactivate();
+    s_pliersBlockRight.deactivate();
+}
+

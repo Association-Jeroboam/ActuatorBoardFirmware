@@ -16,9 +16,9 @@ int main() {
     Board::init();
     Logging::init();
     Logging::println("Starting up");
-    shellInit();
     Board::Com::CANBus::init();
     Board::Com::DxlServo::init();
+    shellInit();
 
 
     PliersManager::instance()->start(NORMALPRIO);
