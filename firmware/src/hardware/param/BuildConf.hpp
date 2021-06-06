@@ -4,6 +4,7 @@
 #include "Board.hpp"
 #include "board.h"
 #include "hal_serial.h"
+#include "LocalMath.hpp"
 
 #define LOGGING_DRIVER SD2
 #define SHELL_DRIVER LOGGING_DRIVER
@@ -38,4 +39,7 @@ constexpr uint8_t PLIERS_BLOCK_LEFT_ACTIVE_ANGLE = 148;
 constexpr uint8_t PLIERS_BLOCK_RIGHT_ID   = 18;
 constexpr uint8_t PLIERS_BLOCK_RIGHT_IDLE_ANGLE = 76;
 constexpr uint8_t PLIERS_BLOCK_RIGHT_ACTIVE_ANGLE = 152;
+
+constexpr uint8_t SLIDER_ELEVATOR_ID = 1;
+constexpr float   SLIDER_ELEVATOR_DISTANCE_PER_TURN = 15.3 * 2. * M_PI;
 

@@ -8,6 +8,7 @@
 #include "CanTxThread.hpp"
 #include "Pliers.hpp"
 #include "DxlPliers.hpp"
+#include "Slider.hpp"
 
 CanRxThread canRxThread;
 CanTxThread canTxThread;
@@ -23,6 +24,8 @@ static DxlPliers s_pliersRearFarLeft(PLIERS_REAR_FAR_LEFT_ID);
 
 static DxlPliers s_pliersBlockLeft(PLIERS_BLOCK_LEFT_ID, PLIERS_BLOCK_LEFT_IDLE_ANGLE, PLIERS_BLOCK_LEFT_ACTIVE_ANGLE);
 static DxlPliers s_pliersBlockRight(PLIERS_BLOCK_RIGHT_ID, PLIERS_BLOCK_RIGHT_IDLE_ANGLE, PLIERS_BLOCK_RIGHT_ACTIVE_ANGLE);
+
+static Slider s_elevator(SLIDER_ELEVATOR_ID);
 
 constexpr uint32_t DXL_BAUDRATE = 1000000;
 Dynamixel2Arduino * dxlBus;
@@ -75,6 +78,10 @@ void Board::Com::DxlServo::init(){
     s_pliersBlockLeft.init();
     s_pliersBlockRight.init();
 
+    // init sliders
+    s_elevator.init();
+    s_elevator.setPIDGains(640, 50, 4000);
+
 }
 
 Dynamixel2Arduino * Board::Com::DxlServo::getBus(){
@@ -106,3 +113,6 @@ void Board::Com::DxlServo::disengagePliersBlock() {
     s_pliersBlockRight.deactivate();
 }
 
+void Board::Com::DxlServo::elevatorSetHeigth(int16_t height) {
+    s_elevator.goToDistance(height);
+}

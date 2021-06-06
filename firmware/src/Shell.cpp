@@ -116,9 +116,32 @@ usage:
     Logging::println("pliers_block [engage/disengage]");
 }
 
+static void cmd_slider(BaseSequentialStream* chp, int argc, char* argv[]) {
+    (void)chp;
+    (void)chp;
+    if (argc == 2) {
+        int16_t distance = atoi(argv[1]);
+        if(!strcmp(argv[0], "elevator")) {
+            Board::Com::DxlServo::elevatorSetHeigth(distance);
+        } else if(!strcmp(argv[0], "translator")) {
+            Logging::println("Not supported yet");
+        } else {
+            goto usage;
+        }
+    } else {
+        goto usage;
+    }
+    return;
+
+    usage:
+    Logging::println("usage:");
+    Logging::println("slider [elevator/translator] [distance (mm)]");
+}
+
 static const ShellCommand commands[] = {
     {"pliers", cmd_pliers},
     {"pliers_block", cmd_pliers_block},
+    {"slider", cmd_slider},
     {NULL, NULL},
 };
 /*

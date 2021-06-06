@@ -20,6 +20,8 @@ namespace Board {
             Pliers* getPliersByID(enum pliersID ID);
             void engagePliersBlock();
             void disengagePliersBlock();
+            void elevatorSetHeigth(int16_t height);
+
         }
     }
 }
