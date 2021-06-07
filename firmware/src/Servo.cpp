@@ -1,9 +1,5 @@
 #include "Servo.hpp"
+#include "Logging.hpp"
 
-void Servo::setActiveAngle(float activeAngle) {
-    m_activeAngle = activeAngle;
-}
+Servo::Servo(uint8_t id): m_id(id){}
 
-void Servo::setIdleAngle(float idleAngle) {
-    m_idleAngle = idleAngle;
-}

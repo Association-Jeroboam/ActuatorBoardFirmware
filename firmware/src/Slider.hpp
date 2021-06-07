@@ -1,17 +1,12 @@
-#ifndef __SLIDER_HPP__
-#define __SLIDER_HPP__
+#pragma once
 #include <inttypes.h>
+#include "Servo.hpp"
 
-class Slider{
+class Slider: public Servo{
 public:
     Slider(uint8_t id);
     void init();
     void goToDistance(int16_t distance);
     void setPIDGains(uint16_t p, uint16_t i, uint16_t d);
 
-private:
-    uint8_t m_id;
 };
-
-
-#endif //__SLIDER_HPP__

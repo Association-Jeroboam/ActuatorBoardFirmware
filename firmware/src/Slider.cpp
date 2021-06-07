@@ -4,9 +4,7 @@
 #include "ch.hpp"
 #include "Logging.hpp"
 
-Slider::Slider(uint8_t id): m_id(id){
-
-}
+Slider::Slider(uint8_t id): Servo(id){}
 
 void Slider::init(){
     Logging::println("[Slider] init %d", m_id);
@@ -17,7 +15,6 @@ void Slider::init(){
 
     // Configure actuator here
     bus->setOperatingMode(m_id, OP_EXTENDED_POSITION);
-
     // Configuration done
     bus->torqueOn(m_id);
     bus->ledOn(m_id);

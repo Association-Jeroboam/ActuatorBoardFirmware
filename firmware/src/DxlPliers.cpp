@@ -3,11 +3,7 @@
 #include "Board.hpp"
 #include "Logging.hpp"
 
-DxlPliers::DxlPliers(uint8_t id, float idleAngle, float activeAngle){
-    m_id = id;
-    m_idleAngle = idleAngle;
-    m_activeAngle = activeAngle;
-}
+DxlPliers::DxlPliers(uint8_t id, float idleAngle, float activeAngle):Pliers(id, idleAngle, activeAngle){}
 
 void DxlPliers::init(){
     Logging::println("[DxlPliers] init %d", m_id);
