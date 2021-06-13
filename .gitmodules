@@ -4,3 +4,6 @@
 [submodule "firmware/libs/Dynamixel2Arduino"]
 	path = firmware/libs/Dynamixel2Arduino
 	url = git@github.com:ROBOTIS-GIT/Dynamixel2Arduino.git
+[submodule "firmware/libs/CanProtocol"]
+	path = firmware/libs/CanProtocol
+	url = git@github.com:Association-Jeroboam/CanProtocol.git

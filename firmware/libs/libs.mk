@@ -9,3 +9,9 @@ COMMONINC += $(FIRMWAREDIR)/libs/Dynamixel2Arduino/src/utility
 COMMONCPPSRC += $(FIRMWAREDIR)/libs/Dynamixel2Arduino/src/utility/master.cpp
 COMMONCPPSRC += $(FIRMWAREDIR)/libs/Dynamixel2Arduino/src/utility/port_handler.cpp
 COMMONCPPSRC += $(FIRMWAREDIR)/libs/Dynamixel2Arduino/src/utility/slave.cpp
+
+COMMONINC += $(FIRMWAREDIR)/libs/CanProtocol
+COMMONINC += $(FIRMWAREDIR)/libs/CanProtocol/ChibiOS
+COMMONCPPSRC += $(FIRMWAREDIR)/libs/CanProtocol/CanProtocol.cpp
+COMMONCPPSRC += $(FIRMWAREDIR)/libs/CanProtocol/ChibiOS/CanRxThread.cpp
+COMMONCPPSRC += $(FIRMWAREDIR)/libs/CanProtocol/ChibiOS/CanTxThread.cpp

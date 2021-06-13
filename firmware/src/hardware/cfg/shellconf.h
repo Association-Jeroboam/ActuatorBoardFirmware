@@ -58,7 +58,7 @@
  * @brief   Prompt string
  */
 #if !defined(SHELL_PROMPT_STR) || defined(__DOXYGEN__)
-#define SHELL_PROMPT_STR            "MotionBoard> "
+#define SHELL_PROMPT_STR            "ActionBoard> "
 #endif
 
 /**

@@ -1,9 +1,12 @@
 #include <ch.hpp>
 #include <hal.h>
+#include <shell.h>
+#include "Shell.hpp"
 #include "Board.hpp"
 #include "Logging.hpp"
 #include "BuildConf.hpp"
 #include "Dynamixel2Arduino.h"
+#include "PliersManager.hpp"
 
 
 
@@ -13,28 +16,19 @@ int main() {
     Board::init();
     Logging::init();
     Logging::println("Starting up");
+    Board::Com::CANBus::init();
+    Board::Com::DxlServo::init();
+    shellInit();
 
-    Dynamixel2Arduino actuator_bus(&XL320_DRIVER);
-    actuator_bus.begin(1000000);
-    uint8_t id = 21;
-    bool ret;
 
-    actuator_bus.setPortProtocolVersion(2.0);
+    PliersManager::instance()->start(NORMALPRIO);
+    chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
+                        "shell", NORMALPRIO + 1,
+                        shellThread, (void*)&shell_cfg);
+    chThdSleepMilliseconds(20);
     while (!chThdShouldTerminateX()) {
-
-
-        ret = actuator_bus.setGoalPosition(id, 0, UNIT_DEGREE);
-        chThdSleepMilliseconds(1000);
-        float position = actuator_bus.getPresentPosition(id, UNIT_DEGREE);
-        palSetLine(LED_LINE);
-        Logging::println("position: %f, success %d", position, ret);
-        ret = actuator_bus.setGoalPosition(id, 90, UNIT_DEGREE);
-        chThdSleepMilliseconds(1000);
-        position = actuator_bus.getPresentPosition(id, UNIT_DEGREE);
-        palClearLine(LED_LINE);
-        Logging::println("position: %f, success %d", position, ret);
-
+        palToggleLine(LED_LINE);
+        chThdSleepMilliseconds(20);
     }
-
     Logging::println("Shutting down");
 }
