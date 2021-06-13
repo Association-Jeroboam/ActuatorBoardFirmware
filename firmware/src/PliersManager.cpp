@@ -13,20 +13,18 @@ PliersManager* PliersManager::instance() {
 
 PliersManager::PliersManager() {
     chFifoObjectInit(&m_orderQueue, ORDER_DATA_SIZE, ORDER_QUEUE_LEN,  m_orderBuffer, m_msgBuffer);
-    for(uint8_t id = 0; id < PLIERS_MANAGER_MAX_PLIERS_COUNT; id++) {
-        m_pliers[id] = Board::Com::DxlServo::getPliersByID((enum pliersID)id);
-        if(!m_pliers[id]) {
-            Logging::println("Pliers %d Not found!", id);
-        }
-    }
 }
 
 void PliersManager::main() {
     setName("Pliers Manager");
 
     for(uint8_t id = 0; id < PLIERS_MANAGER_MAX_PLIERS_COUNT; id++) {
+        m_pliers[id] = Board::Com::DxlServo::getPliersByID((enum pliersID)id);
         if(m_pliers[id]) {
+
             m_pliers[id]->deactivate();
+        } else {
+            Logging::println("[Pliers Manager] Pliers %d Not found!", id);
         }
     }
     Board::Com::DxlServo::disengagePliersBlock();

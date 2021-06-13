@@ -8,6 +8,7 @@
 #include "Dynamixel2Arduino.h"
 #include "PliersManager.hpp"
 
+static THD_WORKING_AREA(waShellThread, SHELL_WA_SIZE);
 
 
 int main() {
@@ -21,11 +22,10 @@ int main() {
     shellInit();
 
 
-    PliersManager::instance()->start(NORMALPRIO);
-    chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
-                        "shell", NORMALPRIO + 1,
-                        shellThread, (void*)&shell_cfg);
+    chThdCreateStatic(waShellThread, sizeof(waShellThread), NORMALPRIO,
+                      shellThread, (void*)&shell_cfg);;
     chThdSleepMilliseconds(20);
+    PliersManager::instance()->start(NORMALPRIO);
     while (!chThdShouldTerminateX()) {
         palToggleLine(LED_LINE);
         chThdSleepMilliseconds(20);

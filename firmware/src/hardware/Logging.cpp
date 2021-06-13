@@ -17,6 +17,8 @@ __extension__ SerialConfig serialConfig {
 };
 
 void Logging::init() {
+    palSetLineMode(LOGGING_TX_PIN, LOGGING_TX_PIN_MODE);
+    palSetLineMode(LOGGING_RX_PIN, LOGGING_RX_PIN_MODE);
     sdStart(&LOGGING_DRIVER, &serialConfig);
 }
 

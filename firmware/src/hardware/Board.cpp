@@ -30,12 +30,9 @@ static Slider s_elevator(SLIDER_ELEVATOR_ID);
 constexpr uint32_t DXL_BAUDRATE = 1000000;
 Dynamixel2Arduino * dxlBus;
 
-CANConfig canConfig = {
-    .mcr = 0,
-    .btr = 0x00050007,
-};
 
 void Board::init() {
+    palSetLineMode(LED_LINE, PAL_MODE_OUTPUT_PUSHPULL);
 }
 
 void Board::Com::CANBus::init(){
@@ -57,8 +54,7 @@ void Board::Com::CANBus::registerListener(CanListener *listener) {
 }
 
 void Board::Com::DxlServo::init(){
-    palSetLineMode(XL320_DATA_PIN, PAL_MODE_ALTERNATE(7));
-    palSetLineMode(XL320_DIR_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+    palSetLineMode(XL320_DATA_PIN, XL320_DATA_PIN_MODE);
     dxlBus = new Dynamixel2Arduino(&XL320_DRIVER);
     dxlBus->begin(DXL_BAUDRATE);
     dxlBus->setPortProtocolVersion(2.0);

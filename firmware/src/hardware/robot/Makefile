@@ -85,13 +85,14 @@ endif
 # Define project name here
 PROJECT = ActuatorBoard
 TARGET_TYPE = hardware
+TARGER = robot
 
 # Target settings.
 MCU      = cortex-m4
-PLATFORM = STM32F303
+PLATFORM = STM32G4
 
 # Imported source files and paths.
-ROOTDIR   := ../../..
+ROOTDIR   := ../../../..
 CHIBIOS   := $(ROOTDIR)/firmware/libs/ChibiOS
 CONFDIR   := ./cfg
 BUILDDIR  := ./build
@@ -104,11 +105,11 @@ PARAMDIR  := ./param
 # Licensing files.
 include $(CHIBIOS)/os/license/license.mk
 # Startup files.
-include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f3xx.mk
+include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32g4xx.mk
 # HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
-include $(CHIBIOS)/os/hal/ports/STM32/STM32F3xx/platform.mk
-include $(CHIBIOS)/os/hal/boards/ST_NUCLEO32_F303K8/board.mk
+include $(CHIBIOS)/os/hal/ports/STM32/STM32G4xx/platform.mk
+include $(CHIBIOS)/os/hal/boards/ST_NUCLEO64_G431RB/board.mk
 include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
@@ -120,7 +121,7 @@ include $(CHIBIOS)/os/various/cpp_wrappers/chcpp.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
 
 # Define linker script file here
-LDSCRIPT= $(STARTUPLD)/STM32F303x8.ld
+LDSCRIPT= $(STARTUPLD)/STM32G431xB.ld
 
 # Project files
 include $(COMMONDIR)/common.mk

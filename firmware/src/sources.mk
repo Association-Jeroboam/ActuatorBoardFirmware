@@ -7,4 +7,6 @@ COMMONCPPSRC += $(SOURCEDIR)/DxlPliers.cpp
 COMMONCPPSRC += $(SOURCEDIR)/Slider.cpp
 COMMONCPPSRC += $(SOURCEDIR)/Shell.cpp
 
+COMMONINC += $(SOURCEDIR)
+
 include $(SOURCEDIR)/$(TARGET_TYPE)/target.mk
