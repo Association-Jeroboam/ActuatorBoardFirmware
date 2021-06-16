@@ -9,10 +9,10 @@ constexpr uint16_t DXL_PLIERS_D_GAIN = 0;
 
 class DxlPliers : public Pliers {
 public:
-    DxlPliers(uint8_t id, float idleAngle = 90, float activeAngle = 0);
-    void init();
-    void activate();
-    void deactivate();
-    void setAngle(int16_t angle);
+    explicit DxlPliers(uint8_t id, float idleAngle = 90, float activeAngle = 0);
+    void init() override;
+    void activate() override;
+    void deactivate() override;
+    void setAngle(int16_t angle) override;
 
 };

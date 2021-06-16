@@ -9,18 +9,21 @@
 #include "Pliers.hpp"
 #include "DxlPliers.hpp"
 #include "Slider.hpp"
+#include "Pliers.hpp"
+#include "PwmPliers.hpp"
 
 CanRxThread canRxThread;
 CanTxThread canTxThread;
-static DxlPliers s_pliersFrontFarLeft(PLIERS_FRONT_FAR_LEFT_ID);
-static DxlPliers s_pliersFrontLeft(PLIERS_FRONT_LEFT_ID);
-static DxlPliers s_pliersFrontRight(PLIERS_FRONT_RIGHT_ID);
+
+static DxlPliers s_pliersFrontFarLeft( PLIERS_FRONT_FAR_LEFT_ID);
+static DxlPliers s_pliersFrontLeft(    PLIERS_FRONT_LEFT_ID);
+static DxlPliers s_pliersFrontRight(   PLIERS_FRONT_RIGHT_ID);
 static DxlPliers s_pliersFrontFarRight(PLIERS_FRONT_FAR_RIGHT_ID);
-static DxlPliers s_pliersRearFarRight(PLIERS_REAR_FAR_RIGHT_ID);
-static DxlPliers s_pliersRearRight(PLIERS_REAR_RIGHT_ID);
-static DxlPliers s_pliersRearMiddle(PLIERS_REAR_MIDDLE_ID);
-static DxlPliers s_pliersRearLeft(PLIERS_REAR_LEFT_ID);
-static DxlPliers s_pliersRearFarLeft(PLIERS_REAR_FAR_LEFT_ID);
+static PwmPliers s_pliersRearFarRight( PLIERS_REAR_FAR_RIGHT_ID, PLIERS_REAR_FAR_RIGHT_PWM_CHANNEL, PLIERS_REAR_FAR_RIGHT_IDLE_ANGLE, PLIERS_REAR_FAR_RIGHT_ACTIVE_ANGLE);
+static PwmPliers s_pliersRearRight(    PLIERS_REAR_RIGHT_ID,     PLIERS_REAR_RIGHT_PWM_CHANNEL,     PLIERS_REAR_RIGHT_IDLE_ANGLE,     PLIERS_REAR_RIGHT_ACTIVE_ANGLE );
+static PwmPliers s_pliersRearMiddle(   PLIERS_REAR_MIDDLE_ID,    PLIERS_REAR_MIDDLE_PWM_CHANNEL,    PLIERS_REAR_MIDDLE_IDLE_ANGLE,    PLIERS_REAR_MIDDLE_ACTIVE_ANGLE);
+static PwmPliers s_pliersRearLeft(     PLIERS_REAR_LEFT_ID,      PLIERS_REAR_LEFT_PWM_CHANNEL,      PLIERS_REAR_LEFT_ANGLE_IDLE,      PLIERS_REAR_LEFT_ACTIVE_ANGLE);
+static PwmPliers s_pliersRearFarLeft(  PLIERS_REAR_FAR_LEFT_ID,  PLIERS_REAR_FAR_LEFT_PWM_CHANNEL,  PLIERS_REAR_FAR_LEFT_IDLE_ANGLE,  PLIERS_REAR_FAR_LEFT_ACTIVE_ANGLE);
 
 static DxlPliers s_pliersBlockLeft(PLIERS_BLOCK_LEFT_ID, PLIERS_BLOCK_LEFT_IDLE_ANGLE, PLIERS_BLOCK_LEFT_ACTIVE_ANGLE);
 static DxlPliers s_pliersBlockRight(PLIERS_BLOCK_RIGHT_ID, PLIERS_BLOCK_RIGHT_IDLE_ANGLE, PLIERS_BLOCK_RIGHT_ACTIVE_ANGLE);
@@ -84,7 +87,7 @@ Dynamixel2Arduino * Board::Com::DxlServo::getBus(){
     return dxlBus;
 }
 
-Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
+Pliers*  Board::Actuators::getPliersByID(enum pliersID ID){
 
     switch (ID) {
         case PLIERS_FRONT_FAR_LEFT: return &s_pliersFrontFarLeft;
@@ -99,16 +102,38 @@ Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
     }
     return nullptr;
 }
-void Board::Com::DxlServo::engagePliersBlock() {
+void Board::Actuators::engagePliersBlock() {
     s_pliersBlockLeft.activate();
     s_pliersBlockRight.activate();
 }
 
-void Board::Com::DxlServo::disengagePliersBlock() {
+void Board::Actuators::disengagePliersBlock() {
     s_pliersBlockLeft.deactivate();
     s_pliersBlockRight.deactivate();
 }
 
-void Board::Com::DxlServo::elevatorSetHeigth(int16_t height) {
+void Board::Actuators::elevatorSetHeigth(int16_t height) {
     s_elevator.goToDistance(height);
+}
+
+void Board::Com::I2CBus::init(){
+    palSetLineMode(I2C_SCL_PIN, I2C_SCL_PIN_MODE);
+    palSetLineMode(I2C_SDA_PIN, I2C_SDA_PIN_MODE);
+    i2cStart(&I2C_DRIVER, &i2cConfig);
+
+}
+
+bool Board::Com::I2CBus::transmit(uint8_t addr, uint8_t *txData, uint8_t txLen, uint8_t *rxData, uint8_t rxLen){
+    i2cAcquireBus(&I2C_DRIVER);
+    msg_t ret = i2cMasterTransmitTimeout(&I2C_DRIVER, addr, txData, txLen, rxData, rxLen, TIME_MS2I(10));
+    i2cReleaseBus(&I2C_DRIVER);
+    return ret == MSG_OK;
+}
+
+bool Board::Com::I2CBus::receive(uint8_t addr, uint8_t *rxData, uint8_t rxLen){
+    i2cAcquireBus(&I2C_DRIVER);
+    msg_t ret = i2cMasterReceiveTimeout(&I2C_DRIVER, addr, rxData, rxLen, TIME_MS2I(10));
+    i2cReleaseBus(&I2C_DRIVER);
+
+    return ret == MSG_OK;
 }
