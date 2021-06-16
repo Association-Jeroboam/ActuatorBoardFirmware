@@ -10,3 +10,6 @@
 [submodule "firmware/libs/PCA9635"]
 	path = firmware/libs/PCA9635
 	url = git@github.com:RobTillaart/PCA9635.git
+[submodule "firmware/libs/Adafruit-PWM-Servo-Driver-Library"]
+	path = firmware/libs/Adafruit-PWM-Servo-Driver-Library
+	url = git@github.com:adafruit/Adafruit-PWM-Servo-Driver-Library.git
