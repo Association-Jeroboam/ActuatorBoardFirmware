@@ -7,3 +7,6 @@
 [submodule "firmware/libs/CanProtocol"]
 	path = firmware/libs/CanProtocol
 	url = git@github.com:Association-Jeroboam/CanProtocol.git
+[submodule "firmware/libs/PCA9635"]
+	path = firmware/libs/PCA9635
+	url = git@github.com:RobTillaart/PCA9635.git
