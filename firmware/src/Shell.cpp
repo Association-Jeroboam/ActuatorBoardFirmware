@@ -122,7 +122,7 @@ static void cmd_slider(BaseSequentialStream* chp, int argc, char* argv[]) {
     if (argc == 2) {
         int16_t distance = atoi(argv[1]);
         if(!strcmp(argv[0], "elevator")) {
-            Board::Com::DxlServo::elevatorSetHeigth(distance);
+            Board::Actuators::elevatorSetHeigth(distance);
         } else if(!strcmp(argv[0], "translator")) {
             Logging::println("Not supported yet");
         } else {

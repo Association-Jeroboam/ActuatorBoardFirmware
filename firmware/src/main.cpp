@@ -20,6 +20,7 @@ int main() {
     Board::Com::CANBus::init();
     Board::Com::DxlServo::init();
     Board::Com::I2CBus::init();
+    Board::Actuators::init();
     shellInit();
 
 

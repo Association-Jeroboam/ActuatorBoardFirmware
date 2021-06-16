@@ -3,7 +3,7 @@
 #include "PliersManager.hpp"
 #include <new>
 
-using namespace Board::Com::DxlServo;
+using namespace Board;
 
 PliersManager PliersManager::s_instance;
 
@@ -19,7 +19,7 @@ void PliersManager::main() {
     setName("Pliers Manager");
 
     for(uint8_t id = 0; id < PLIERS_MANAGER_MAX_PLIERS_COUNT; id++) {
-        m_pliers[id] = Board::Com::DxlServo::getPliersByID((enum pliersID)id);
+        m_pliers[id] = Actuators::getPliersByID((enum pliersID)id);
         if(m_pliers[id]) {
 
             m_pliers[id]->deactivate();
@@ -27,9 +27,9 @@ void PliersManager::main() {
             Logging::println("[Pliers Manager] Pliers %d Not found!", id);
         }
     }
-    Board::Com::DxlServo::disengagePliersBlock();
+    Actuators::disengagePliersBlock();
 
-    Board::Com::CANBus::registerListener(this);
+    Com::CANBus::registerListener(this);
 
     while (!shouldTerminate()){
         canFrame_t * frame;
@@ -40,10 +40,11 @@ void PliersManager::main() {
                     switch (frame->data.pliersData.state) {
                         case PLIERS_OPEN:
                             m_pliers[frame->data.pliersData.plierID]->deactivate();
+                            break;
                         case PLIERS_CLOSE:
                             m_pliers[frame->data.pliersData.plierID]->activate();
+                            break;
                     }
-                    Logging::println("[PliersManager] Order sent. ID %u, state %u", frame->data.pliersData.plierID, frame->data.pliersData.state);
 
                 } else {
                     Logging::println("[PliersManager] received order for unknown pliers");
@@ -51,9 +52,9 @@ void PliersManager::main() {
                 break;
             case CAN_PLIERS_BLOCK_ID:
                 if(frame->data.pliersBlockData.state == 0){
-                    Board::Com::DxlServo::disengagePliersBlock();
+                    Actuators::disengagePliersBlock();
                 } else {
-                    Board::Com::DxlServo::engagePliersBlock();
+                    Actuators::engagePliersBlock();
                 }
                 break;
             case CAN_ARMS_ID:

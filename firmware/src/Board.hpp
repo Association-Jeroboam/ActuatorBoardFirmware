@@ -24,11 +24,15 @@ namespace Board {
             void init();
             bool transmit(uint8_t addr, uint8_t *txData, uint8_t txLen, uint8_t *rxData, uint8_t rxLen);
             bool receive(uint8_t addr, uint8_t *rxData, uint8_t rxLen);
-            Pliers* getPliersByID(enum pliersID ID);
-            void engagePliersBlock();
-            void disengagePliersBlock();
-            void elevatorSetHeigth(int16_t height);
-
         }
+    }
+
+    namespace Actuators {
+        void init();
+        Pliers* getPliersByID(enum pliersID ID);
+        void engagePliersBlock();
+        void disengagePliersBlock();
+        void elevatorSetHeigth(int16_t height);
+        void setPwmServo(uint8_t channel, uint16_t value);
     }
 }

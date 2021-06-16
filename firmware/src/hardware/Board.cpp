@@ -84,7 +84,7 @@ Dynamixel2Arduino * Board::Com::DxlServo::getBus(){
     return dxlBus;
 }
 
-Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
+Pliers*  Board::Actuators::getPliersByID(enum pliersID ID){
 
     switch (ID) {
         case PLIERS_FRONT_FAR_LEFT: return &s_pliersFrontFarLeft;
@@ -99,17 +99,17 @@ Pliers*  Board::Com::DxlServo::getPliersByID(enum pliersID ID){
     }
     return nullptr;
 }
-void Board::Com::DxlServo::engagePliersBlock() {
+void Board::Actuators::engagePliersBlock() {
     s_pliersBlockLeft.activate();
     s_pliersBlockRight.activate();
 }
 
-void Board::Com::DxlServo::disengagePliersBlock() {
+void Board::Actuators::disengagePliersBlock() {
     s_pliersBlockLeft.deactivate();
     s_pliersBlockRight.deactivate();
 }
 
-void Board::Com::DxlServo::elevatorSetHeigth(int16_t height) {
+void Board::Actuators::elevatorSetHeigth(int16_t height) {
     s_elevator.goToDistance(height);
 }
 
