@@ -19,6 +19,7 @@ int main() {
     Logging::println("Starting up");
     Board::Com::CANBus::init();
     Board::Com::DxlServo::init();
+    Board::Com::I2CBus::init();
     shellInit();
 
 

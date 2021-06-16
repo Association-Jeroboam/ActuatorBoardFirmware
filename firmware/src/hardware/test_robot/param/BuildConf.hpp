@@ -32,6 +32,20 @@ CANConfig const canConfig = {
         .btr = 0x00050007,
 };
 
+#define I2C_DRIVER I2CD1
+
+#define I2C_SDA_PIN      LINE_ARD_D4
+#define I2C_SDA_PIN_MODE PAL_MODE_ALTERNATE(4)
+#define I2C_SCL_PIN      LINE_ARD_D5
+#define I2C_SCL_PIN_MODE PAL_MODE_ALTERNATE(4)
+
+I2CConfig const i2cConfig = {
+        .timingr = 0x10707DBC,
+        .cr1 = 0,
+        .cr2 = 0,
+};
+
+
 constexpr uint8_t PLIERS_FRONT_FAR_LEFT_ID  = 13; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_FRONT_LEFT_ID      = 14; //TODO: CHANGE ME!
 constexpr uint8_t PLIERS_FRONT_RIGHT_ID     = 15; //TODO: CHANGE ME!

@@ -17,6 +17,13 @@ namespace Board {
         namespace DxlServo {
             void init();
             Dynamixel2Arduino * getBus();
+
+        }
+
+        namespace I2CBus {
+            void init();
+            bool transmit(uint8_t addr, uint8_t *txData, uint8_t txLen, uint8_t *rxData, uint8_t rxLen);
+            bool receive(uint8_t addr, uint8_t *rxData, uint8_t rxLen);
             Pliers* getPliersByID(enum pliersID ID);
             void engagePliersBlock();
             void disengagePliersBlock();
