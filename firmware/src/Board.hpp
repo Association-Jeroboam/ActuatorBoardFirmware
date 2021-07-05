@@ -10,6 +10,8 @@ namespace Board {
     namespace IO {
         void init();
         void toggleNucleoLed();
+        void toggleLed2();
+        void toggleLed3();
     }
 
     namespace Com {
