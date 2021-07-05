@@ -36,6 +36,14 @@ Dynamixel2Arduino * dxlBus;
 
 void Board::init() {
     Board::IO::init();
+    Board::Com::init();
+    Board::Actuators::init();
+}
+
+void Board::Com::init() {
+    Board::Com::CANBus::init();
+    Board::Com::I2CBus::init();
+    Board::Com::DxlServo::init();
 }
 
 void Board::Com::CANBus::init(){
@@ -169,9 +177,9 @@ void Board::IO::toggleNucleoLed(){
 }
 
 void Board::IO::toggleLed2(){
-//    palToggleLine(LED_2_LINE);
+    palToggleLine(LED_2_LINE);
 }
 
 void Board::IO::toggleLed3(){
-//    palToggleLine(LED_3_LINE);
+    palToggleLine(LED_3_LINE);
 }
