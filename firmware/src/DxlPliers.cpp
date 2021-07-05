@@ -24,10 +24,12 @@ void DxlPliers::init(){
 }
 
 void DxlPliers::deactivate() {
+	Logging::println("deactivate pliers %u",m_id);
     Board::Com::DxlServo::getBus()->setGoalPosition(m_id, m_idleAngle, UNIT_DEGREE);
 }
 
 void DxlPliers::activate() {
+    Logging::println("activate pliers %u",m_id);
     Board::Com::DxlServo::getBus()->setGoalPosition(m_id, m_activeAngle, UNIT_DEGREE);
 }
 
