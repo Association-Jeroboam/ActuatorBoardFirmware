@@ -7,7 +7,13 @@
 namespace Board {
     void init();
 
+    namespace IO {
+        void init();
+        void toggleNucleoLed();
+    }
+
     namespace Com {
+        void init();
         namespace CANBus {
             void init();
             bool send(canFrame_t canData);

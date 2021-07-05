@@ -19,14 +19,10 @@ int main() {
     Board::init();
     Logging::init();
     Logging::println("Starting up");
-    Board::Com::CANBus::init();
-    Board::Com::DxlServo::init();
-    Board::Com::I2CBus::init();
-    Board::Actuators::init();
     shellInit();
 
 
-    PliersManager::instance()->start(NORMALPRIO);
+//    PliersManager::instance()->start(NORMALPRIO);
     chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
                         "shell", NORMALPRIO + 1,
                         shellThread, (void*)&shell_cfg);
@@ -34,9 +30,7 @@ int main() {
 
     uint8_t id = 4;
     while (!chThdShouldTerminateX()) {
-        palToggleLine(LED_LINE);
-        chThdSleepMilliseconds(200);
-        palToggleLine(LED_LINE);
+        Board::IO::toggleNucleoLed();
         chThdSleepMilliseconds(200);
     }
     Logging::println("Shutting down");

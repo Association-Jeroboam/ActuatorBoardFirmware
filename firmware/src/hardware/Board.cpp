@@ -35,7 +35,7 @@ Dynamixel2Arduino * dxlBus;
 
 
 void Board::init() {
-    palSetLineMode(LED_LINE, PAL_MODE_OUTPUT_PUSHPULL);
+    Board::IO::init();
 }
 
 void Board::Com::CANBus::init(){
@@ -136,4 +136,14 @@ bool Board::Com::I2CBus::receive(uint8_t addr, uint8_t *rxData, uint8_t rxLen){
     i2cReleaseBus(&I2C_SERVO_DRIVER);
 
     return ret == MSG_OK;
+}
+
+void Board::IO::init(){
+
+    palSetLineMode(NUCLEO_LED_LINE, PAL_MODE_OUTPUT_PUSHPULL);
+
+}
+
+void Board::IO::toggleNucleoLed(){
+    palToggleLine(NUCLEO_LED_LINE);
 }
